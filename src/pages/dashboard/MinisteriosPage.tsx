@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollableTabs, ScrollableTabsContent, ScrollableTabsList, ScrollableTabsTrigger } from '@/components/ui/scrollable-tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Users, Bell, Wrench, Calendar, Music, MessageCircle, BarChart3 } from 'lucide-react';
@@ -51,45 +51,45 @@ export default function MinisteriosPage() {
           <h1 className="text-3xl font-bold text-foreground">Ministérios & Louvor — Centro de Comando</h1>
           <p className="text-muted-foreground mt-2">Gerencie equipes, escalas, repertório e alertas em um só lugar.</p>
         </div>
-          <Tabs defaultValue="equipes" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-9 lg:w-[840px]">
-              <TabsTrigger value="equipes" className="flex items-center gap-2">
+          <ScrollableTabs defaultValue="equipes" className="space-y-6">
+            <ScrollableTabsList>
+              <ScrollableTabsTrigger value="equipes" className="flex items-center gap-2">
                 <Users className="h-4 w-4" />
                 Equipes
-              </TabsTrigger>
-              <TabsTrigger value="escalas" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="escalas" className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 Escalas
-              </TabsTrigger>
-              <TabsTrigger value="convocatoria" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="convocatoria" className="flex items-center gap-2">
                 Convocatória
-              </TabsTrigger>
-              <TabsTrigger value="disponibilidade" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="disponibilidade" className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 Disponibilidade
-              </TabsTrigger>
-              <TabsTrigger value="repertorio" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="repertorio" className="flex items-center gap-2">
                 <Music className="h-4 w-4" />
                 Repertório
-              </TabsTrigger>
-              <TabsTrigger value="portal" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="portal" className="flex items-center gap-2">
                 Portal de Louvor
-              </TabsTrigger>
-              <TabsTrigger value="comunicacao" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="comunicacao" className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4" />
                 Comunicação
-              </TabsTrigger>
-              <TabsTrigger value="relatorios" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="relatorios" className="flex items-center gap-2">
                 <BarChart3 className="h-4 w-4" />
                 Relatórios
-              </TabsTrigger>
-              <TabsTrigger value="alertas" className="flex items-center gap-2">
+              </ScrollableTabsTrigger>
+              <ScrollableTabsTrigger value="alertas" className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
                 Alertas
-              </TabsTrigger>
-            </TabsList>
+              </ScrollableTabsTrigger>
+            </ScrollableTabsList>
 
-            <TabsContent value="equipes" className="space-y-6">
+            <ScrollableTabsContent value="equipes" className="space-y-6">
               <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 <Card>
                   <CardHeader>
@@ -125,9 +125,9 @@ export default function MinisteriosPage() {
                   </CardContent>
                 </Card>
               </section>
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="escalas" className="space-y-6">
+            <ScrollableTabsContent value="escalas" className="space-y-6">
               <RequirePermission action="manage" subject="escalas">
                 <SchedulingDashboard
                   planId="ministerios-demo-plan"
@@ -136,34 +136,34 @@ export default function MinisteriosPage() {
                   userRole="leader"
                 />
               </RequirePermission>
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="disponibilidade" className="space-y-6">
+            <ScrollableTabsContent value="disponibilidade" className="space-y-6">
               <AvailabilityManager />
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="convocatoria" className="space-y-6">
+            <ScrollableTabsContent value="convocatoria" className="space-y-6">
               <ConvocacaoInteligenteTab />
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="repertorio" className="space-y-6">
+            <ScrollableTabsContent value="repertorio" className="space-y-6">
               <section>
                 <MusicLibraryManager />
               </section>
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="portal" className="space-y-6">
+            <ScrollableTabsContent value="portal" className="space-y-6">
               <WorshipPortalView />
-            </TabsContent>
-            <TabsContent value="comunicacao" className="space-y-6">
+            </ScrollableTabsContent>
+            <ScrollableTabsContent value="comunicacao" className="space-y-6">
               <ChatInterno />
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="relatorios" className="space-y-6">
+            <ScrollableTabsContent value="relatorios" className="space-y-6">
               <RelatoriosMinisterios />
-            </TabsContent>
+            </ScrollableTabsContent>
 
-            <TabsContent value="alertas" className="space-y-6">
+            <ScrollableTabsContent value="alertas" className="space-y-6">
               <section>
                 <Card>
                   <CardHeader>
@@ -178,8 +178,8 @@ export default function MinisteriosPage() {
                   </CardContent>
                 </Card>
               </section>
-            </TabsContent>
-          </Tabs>
+            </ScrollableTabsContent>
+          </ScrollableTabs>
         </div>
     </AppLayout>
   );
