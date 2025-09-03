@@ -39,6 +39,8 @@ import { PessoasFiltersBar } from './PessoasFiltersBar';
 import { ViewSelector } from './ViewSelector';
 import { MemberCard } from './MemberCard';
 import { useToast } from '@/hooks/use-toast';
+import { MobileOptimizedTable, MobileTableCard, MobileTableField } from '@/components/ui/mobile-optimized-table';
+import { ResponsiveGrid } from '@/components/ui/responsive-grid';
 
 export const PessoasList: React.FC = () => {
   const { filters, setFilter, debouncedFilters, clearFilters } = useFilters({
@@ -307,92 +309,175 @@ export const PessoasList: React.FC = () => {
           {isLoading ? (
             <PessoasListSkeleton />
           ) : viewMode === 'lista' ? (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="min-w-[200px]">Nome</TableHead>
-                    <TableHead className="min-w-[100px]">Tipo</TableHead>
-                    <TableHead className="min-w-[100px]">Status</TableHead>
-                    <TableHead className="min-w-[120px] hidden md:table-cell">Perfil de Acesso</TableHead>
-                    <TableHead className="min-w-[120px] hidden lg:table-cell">Célula</TableHead>
-                    <TableHead className="min-w-[200px]">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
+            <MobileOptimizedTable>
+              {/* Desktop Table */}
+              <div className="hidden sm:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="min-w-[200px]">Nome</TableHead>
+                      <TableHead className="min-w-[100px]">Tipo</TableHead>
+                      <TableHead className="min-w-[100px]">Status</TableHead>
+                      <TableHead className="min-w-[120px] hidden md:table-cell">Perfil de Acesso</TableHead>
+                      <TableHead className="min-w-[120px] hidden lg:table-cell">Célula</TableHead>
+                      <TableHead className="min-w-[200px]">Ações</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                  {pessoas?.map((pessoa) => (
+                    <TableRow key={pessoa.id}>
+                      <TableCell>
+                        <div className="flex flex-col">
+                          <span className="font-medium">{pessoa.nome_completo}</span>
+                          <span className="text-sm text-muted-foreground">{pessoa.email}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          {getTipoIcon(pessoa.tipo_pessoa)}
+                          <Badge variant={getTipoBadge(pessoa.tipo_pessoa) as any}>
+                            {pessoa.tipo_pessoa}
+                          </Badge>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          {getStatusIcon(pessoa.situacao)}
+                          <span className="capitalize">{pessoa.situacao}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        {pessoa.profiles ? (
+                          <Badge variant="outline">
+                            {pessoa.profiles.name}
+                          </Badge>
+                        ) : (
+                          <span className="text-muted-foreground text-sm">Não definido</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell">
+                        {pessoa.celulas?.nome || (
+                          <span className="text-muted-foreground text-sm">Sem célula</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={`/dashboard/pessoas/${pessoa.id}`}>
+                              <Eye className="h-4 w-4 mr-1" />
+                              Ver
+                            </Link>
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={() => {
+                            setSelectedPessoa(pessoa);
+                            setShowDialog(true);
+                          }}>
+                            <Edit className="h-4 w-4 mr-1" />
+                            Editar
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => {
+                              if (window.confirm(`Tem certeza que deseja excluir ${pessoa.nome_completo}?`)) {
+                                handleDeletePessoa(pessoa.id, pessoa.nome_completo);
+                              }
+                            }}
+                            className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Excluir
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="sm:hidden space-y-3">
                 {pessoas?.map((pessoa) => (
-                  <TableRow key={pessoa.id}>
-                    <TableCell>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{pessoa.nome_completo}</span>
-                        <span className="text-sm text-muted-foreground">{pessoa.email}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        {getTipoIcon(pessoa.tipo_pessoa)}
-                        <Badge variant={getTipoBadge(pessoa.tipo_pessoa) as any}>
-                          {pessoa.tipo_pessoa}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        {getStatusIcon(pessoa.situacao)}
-                        <span className="capitalize">{pessoa.situacao}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">
-                      {pessoa.profiles ? (
-                        <Badge variant="outline">
-                          {pessoa.profiles.name}
-                        </Badge>
-                      ) : (
-                        <span className="text-muted-foreground text-sm">Não definido</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="hidden lg:table-cell">
-                      {pessoa.celulas?.nome || (
-                        <span className="text-muted-foreground text-sm">Sem célula</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
-                        <Button variant="outline" size="sm" asChild className="w-full sm:w-auto">
-                          <Link to={`/dashboard/pessoas/${pessoa.id}`}>
-                            <Eye className="h-4 w-4 sm:mr-1" />
-                            <span className="hidden sm:inline">Ver</span>
-                          </Link>
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={() => {
-                          setSelectedPessoa(pessoa);
-                          setShowDialog(true);
-                        }} className="w-full sm:w-auto">
-                          <Edit className="h-4 w-4 sm:mr-1" />
-                          <span className="hidden sm:inline">Editar</span>
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => {
-                            if (window.confirm(`Tem certeza que deseja excluir ${pessoa.nome_completo}?`)) {
-                              handleDeletePessoa(pessoa.id, pessoa.nome_completo);
-                            }
-                          }}
-                          className="w-full sm:w-auto text-destructive hover:text-destructive-foreground hover:bg-destructive"
-                        >
-                          <Trash2 className="h-4 w-4 sm:mr-1" />
-                          <span className="hidden sm:inline">Excluir</span>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                  <MobileTableCard key={pessoa.id}>
+                    <MobileTableField
+                      label="Nome"
+                      value={
+                        <div className="text-right">
+                          <div className="font-medium">{pessoa.nome_completo}</div>
+                          <div className="text-xs text-muted-foreground">{pessoa.email}</div>
+                        </div>
+                      }
+                    />
+                    <MobileTableField
+                      label="Tipo"
+                      value={
+                        <div className="flex items-center justify-end gap-2">
+                          {getTipoIcon(pessoa.tipo_pessoa)}
+                          <Badge variant={getTipoBadge(pessoa.tipo_pessoa) as any}>
+                            {pessoa.tipo_pessoa}
+                          </Badge>
+                        </div>
+                      }
+                    />
+                    <MobileTableField
+                      label="Status"
+                      value={
+                        <div className="flex items-center justify-end gap-2">
+                          {getStatusIcon(pessoa.situacao)}
+                          <span className="capitalize">{pessoa.situacao}</span>
+                        </div>
+                      }
+                    />
+                    {pessoa.profiles && (
+                      <MobileTableField
+                        label="Perfil"
+                        value={
+                          <Badge variant="outline">
+                            {pessoa.profiles.name}
+                          </Badge>
+                        }
+                      />
+                    )}
+                    {pessoa.celulas?.nome && (
+                      <MobileTableField
+                        label="Célula"
+                        value={pessoa.celulas.nome}
+                      />
+                    )}
+                    <div className="pt-3 flex gap-2">
+                      <Button variant="outline" size="sm" asChild className="flex-1">
+                        <Link to={`/dashboard/pessoas/${pessoa.id}`}>
+                          <Eye className="h-4 w-4 mr-1" />
+                          Ver
+                        </Link>
+                      </Button>
+                      <Button variant="outline" size="sm" onClick={() => {
+                        setSelectedPessoa(pessoa);
+                        setShowDialog(true);
+                      }} className="flex-1">
+                        <Edit className="h-4 w-4 mr-1" />
+                        Editar
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => {
+                          if (window.confirm(`Tem certeza que deseja excluir ${pessoa.nome_completo}?`)) {
+                            handleDeletePessoa(pessoa.id, pessoa.nome_completo);
+                          }
+                        }}
+                        className="text-destructive hover:text-destructive-foreground hover:bg-destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </MobileTableCard>
                 ))}
-              </TableBody>
-              </Table>
-            </div>
+              </div>
+            </MobileOptimizedTable>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <ResponsiveGrid columns={{ default: 1, sm: 2, lg: 3, xl: 4 }} gap={4}>
               {pessoas?.map((pessoa) => (
                 <MemberCard
                   key={pessoa.id}
@@ -404,7 +489,7 @@ export const PessoasList: React.FC = () => {
                   onDelete={handleDeletePessoa}
                 />
               ))}
-            </div>
+            </ResponsiveGrid>
           )}
         </CardContent>
       </Card>

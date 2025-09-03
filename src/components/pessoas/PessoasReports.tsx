@@ -9,6 +9,7 @@ import { FileText, Download, Calendar, Users, TrendingUp, Filter, BarChart3, Pie
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
+import { ResponsiveGrid } from '@/components/ui/responsive-grid';
 
 interface ReportData {
   total_pessoas: number;
@@ -193,7 +194,7 @@ export const PessoasReports: React.FC = () => {
           </div>
 
           {/* Métricas Principais */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+          <ResponsiveGrid columns={{ default: 2, sm: 3, md: 5 }} gap={4} className="mb-6">
             <Card>
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{reportData?.total_pessoas}</div>
@@ -224,12 +225,12 @@ export const PessoasReports: React.FC = () => {
                 <p className="text-sm text-muted-foreground">Batizados</p>
               </CardContent>
             </Card>
-          </div>
+          </ResponsiveGrid>
         </CardContent>
       </Card>
 
       {/* Gráficos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <ResponsiveGrid columns={{ default: 1, lg: 2 }} gap={6}>
         {/* Crescimento ao Longo do Tempo */}
         <Card>
           <CardHeader>
@@ -334,7 +335,7 @@ export const PessoasReports: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </ResponsiveGrid>
     </div>
   );
 };

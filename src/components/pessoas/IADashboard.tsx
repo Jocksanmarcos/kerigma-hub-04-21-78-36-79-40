@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Brain, TrendingUp, Users, Target, Lightbulb, AlertTriangle, CheckCircle, Zap } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { ResponsiveGrid } from '@/components/ui/responsive-grid';
 
 interface AnalyticsData {
   total_pessoas: number;
@@ -72,7 +73,7 @@ export const IADashboard: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <ResponsiveGrid columns={{ default: 1, md: 2, lg: 3 }} gap={6}>
         {[...Array(6)].map((_, i) => (
           <Card key={i}>
             <CardHeader className="space-y-2">
@@ -84,7 +85,7 @@ export const IADashboard: React.FC = () => {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </ResponsiveGrid>
     );
   }
 
@@ -115,7 +116,7 @@ export const IADashboard: React.FC = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ResponsiveGrid columns={{ default: 1, md: 3 }} gap={4}>
             <div className="text-center">
               <div className={`text-3xl font-bold ${getScoreColor(analytics.engagement_score)}`}>
                 {Math.round(analytics.engagement_score)}%
@@ -132,12 +133,12 @@ export const IADashboard: React.FC = () => {
               {getHealthBadge(analytics.insights.score_saude)}
               <p className="text-sm text-muted-foreground mt-1">Status Geral</p>
             </div>
-          </div>
+          </ResponsiveGrid>
         </CardContent>
       </Card>
 
       {/* Gráficos e Métricas */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <ResponsiveGrid columns={{ default: 1, lg: 2 }} gap={6}>
         {/* Distribuição por Tipo */}
         <Card>
           <CardHeader>
@@ -198,10 +199,10 @@ export const IADashboard: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </ResponsiveGrid>
 
       {/* Insights e Recomendações */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <ResponsiveGrid columns={{ default: 1, lg: 2 }} gap={6}>
         {/* Recomendações de Crescimento */}
         <Card>
           <CardHeader>
@@ -255,7 +256,7 @@ export const IADashboard: React.FC = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </ResponsiveGrid>
     </div>
   );
 };
