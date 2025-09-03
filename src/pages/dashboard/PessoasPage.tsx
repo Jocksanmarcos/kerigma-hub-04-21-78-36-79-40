@@ -94,18 +94,20 @@ const PessoasPage = () => {
         <div className="flex gap-2 w-full sm:w-auto">
           <Button 
             onClick={() => setShowFamilyTree(true)}
-            className="flex items-center justify-center flex-1 sm:flex-initial sm:w-auto sm:px-4 h-10 px-3 sm:space-x-2"
+            size="sm"
+            className="flex items-center justify-center flex-1 sm:flex-initial sm:w-auto"
           >
-            <TreePine className="h-4 w-4 flex-shrink-0" />
-            <span className="hidden sm:inline text-sm font-medium ml-2">Árvore Genealógica</span>
+            <TreePine className="h-3 w-3 flex-shrink-0" />
+            <span className="hidden sm:inline text-xs font-medium ml-1">Árvore Genealógica</span>
           </Button>
           <Button 
             onClick={() => setShowGenealogyManagement(true)}
             variant="outline"
-            className="flex items-center justify-center flex-1 sm:flex-initial sm:w-auto sm:px-4 h-10 px-3 sm:space-x-2"
+            size="sm"
+            className="flex items-center justify-center flex-1 sm:flex-initial sm:w-auto"
           >
-            <Settings className="h-4 w-4 flex-shrink-0" />
-            <span className="hidden sm:inline text-sm font-medium ml-2">Gestão Genealógia</span>
+            <Settings className="h-3 w-3 flex-shrink-0" />
+            <span className="hidden sm:inline text-xs font-medium ml-1">Gestão Genealógia</span>
           </Button>
         </div>
 
